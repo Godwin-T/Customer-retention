@@ -1,0 +1,5 @@
+mlruns/
+*.csv
+*.ipynb
+*.db
+data/
