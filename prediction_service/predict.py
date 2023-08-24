@@ -4,7 +4,6 @@ import os
 import mlflow
 import pandas as pd
 import numpy as np
-import pickle
 from flask import Flask, request, jsonify
 
 from mlflow.tracking import MlflowClient
@@ -14,28 +13,12 @@ from mlflow.entities import ViewType
 child_directory = os.getcwd()
 parent_directory = os.path.dirname(child_directory)
 
-MLFLOW_TRACKING_URI = f"sqlite:///{parent_directory}/mlflow.db"
+MLFLOW_TRACKING_URI = f"sqlite:///{parent_directory}/model/mlflow.db"
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
-
-client = MlflowClient(tracking_uri=MLFLOW_TRACKING_URI)
-# runs = client.search_runs(
-#     experiment_ids='1',
-#     filter_string="metrics.test_f1_score >0.595",
-#     run_view_type=ViewType.ACTIVE_ONLY,
-#     max_results=5,
-#     order_by=["metrics.test_f1_score ASC"]
-# )
 
 name = "Custormer-churn-models"
 stage="Staging"
-
 loaded_model = mlflow.pyfunc.load_model(f"models:/{name}/{stage}")
-
-# logged_model = f'runs:{parent_directory}/9f00a33d4d4d43c1969d03d106fbf4d7/model'
-
-# # Load model
-# loaded_model = mlflow.pyfunc.load_model(logged_model)
-print('Connected')
 
 def load_data(path):
     data = pd.read_csv(path)
@@ -72,7 +55,7 @@ def predict():
     prediction = loaded_model.predict(df)
     data['churn'] = prediction
     output = data[data['churn'] == 1]
-    output.to_csv('predictions/churning customers.csv', index = False)
+    output.to_csv('predictions/churn.csv', index = False)
     output_text = {'Prediction Status': 'The model successufully predicted the customers that are likely to churn and save the file'}
     return jsonify(output_text)
 

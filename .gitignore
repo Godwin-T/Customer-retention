@@ -1,5 +1,9 @@
 mlruns/
+
 *.csv
 *.ipynb
 *.db
+
 data/
+predictions/
+monitoring_service/

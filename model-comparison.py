@@ -9,6 +9,15 @@ mlflow.set_tracking_uri(tracking_uri)
 client = MlflowClient(tracking_uri= tracking_uri)
 model_name = "Custormer-churn-models"
 
+
+# client = MlflowClient(tracking_uri=MLFLOW_TRACKING_URI)
+# runs = client.search_runs(experiment_ids='1',
+#                           filter_string="metrics.test_f1_score >0.595",
+#                           run_view_type=ViewType.ACTIVE_ONLY,
+#                           max_results=5,
+#                           order_by=["metrics.test_f1_score ASC"]
+#                         )
+
 def load_data(path):
     data = pd.read_csv(path)
     data.columns = data.columns.str.replace(' ', '_').str.lower()
