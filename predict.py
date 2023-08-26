@@ -1,21 +1,18 @@
-#Importing Libraries
+#Import Libraries
 print('Importing Libraries')
 import mlflow
 import pandas as pd
-import numpy as np
-import pickle
 from flask import Flask, request, jsonify
 
 
 
+# Load Model
 MLFLOW_TRACKING_URI = "sqlite:///mlflow.db"
 mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
 logged_model = 'runs:/9f00a33d4d4d43c1969d03d106fbf4d7/model'
-
-# Load model
 loaded_model = mlflow.pyfunc.load_model(logged_model)
-print('Connected')
 
+# Load Data
 def load_data(path):
     data = pd.read_csv(path)
     data.columns = data.columns.str.replace(' ', '_').str.lower()
@@ -28,6 +25,7 @@ def load_data(path):
     data['totalcharges'] = data['totalcharges'].astype('float32')
     return data
 
+# Data Preparation
 def prepare_data(data):
 
     categorical_col = data.dtypes[data.dtypes == 'object'].index.tolist()
@@ -40,15 +38,15 @@ def prepare_data(data):
     return data, df_data
 
 
-app = Flask('Churn')
+# Define Prediction Service
 
+app = Flask('Churn')
 @app.route("/predict", methods = ['POST'])
 def predict():
 
     customer = request.get_json()
     data = load_data(customer)
     data, df = prepare_data(data)
-    #encoded_data = data_encoder(data, feature_cols)
     prediction = loaded_model.predict(df)
     data['churn'] = prediction
     output = data[data['churn'] == 1]
