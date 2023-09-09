@@ -1,3 +1,5 @@
+# Import Model
+
 import pandas as pd
 import mlflow
 from sklearn.metrics import f1_score
@@ -9,15 +11,7 @@ mlflow.set_tracking_uri(tracking_uri)
 client = MlflowClient(tracking_uri= tracking_uri)
 model_name = "Custormer-churn-models"
 
-
-# client = MlflowClient(tracking_uri=MLFLOW_TRACKING_URI)
-# runs = client.search_runs(experiment_ids='1',
-#                           filter_string="metrics.test_f1_score >0.595",
-#                           run_view_type=ViewType.ACTIVE_ONLY,
-#                           max_results=5,
-#                           order_by=["metrics.test_f1_score ASC"]
-#                         )
-
+# Load Data
 def load_data(path):
     data = pd.read_csv(path)
     data.columns = data.columns.str.replace(' ', '_').str.lower()
@@ -30,6 +24,7 @@ def load_data(path):
     data['totalcharges'] = data['totalcharges'].astype('float32')
     return data
 
+# Data Preparation
 def prepare_data(data):
 
     data['churn'] = (data.churn=='yes').astype(int)
@@ -45,6 +40,7 @@ def prepare_data(data):
     data_y = data.pop('churn')
     return (data_x, data_y)
 
+# Model Testing
 def test_model(name, stage, test_x, test_y):
     prev_time = time.time()
     model = mlflow.pyfunc.load_model(f"models:/{name}/{stage}")
@@ -53,7 +49,7 @@ def test_model(name, stage, test_x, test_y):
     time_diff = new_time - prev_time
     return {"F1 Score": f1_score(test_y, y_pred), "Time interval": time_diff}
 
-
+# Compare Modelss
 def compare_models():
 
     df = load_data("data/Telco-Customer-Churn.csv")
