@@ -7,3 +7,5 @@ mlruns/
 data/
 predictions/
 monitoring_service/
+tmp/
+*__pycache__/
