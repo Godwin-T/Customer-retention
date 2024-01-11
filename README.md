@@ -45,18 +45,18 @@ Build the Image
 
 Navigate to the Churn Prediction Service deployment directory:
 
-'''cd Churn_Service/deployment'''
+  cd Churn_Service/deployment
 
 Build the Docker image:
 
-docker build -t churn_prediction:1 .
+  docker build -t churn_prediction:1 .
 
 Running the Service
 
 Run the Docker container, mapping the models directory and exposing the necessary ports:
 
-docker run -it -v "${PWD}/Churn_Service/models/:/home/models" -p 5050:9696 churn_prediction:1
+  docker run -it -v "${PWD}/Churn_Service/models/:/home/models" -p 5050:9696 churn_prediction:1
 
 Now, you can start the Streamlit UI to interact with the Churn Prediction Service:
 
-streamlit run customer_service.py
+  streamlit run customer_service.py
