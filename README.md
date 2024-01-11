@@ -45,7 +45,7 @@ Build the Image
 
 Navigate to the Churn Prediction Service deployment directory:
 
-cd Churn_Service/deployment
+'''cd Churn_Service/deployment'''
 
 Build the Docker image:
 
