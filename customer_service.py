@@ -3,8 +3,9 @@ import streamlit as st
 from langchain.llms import OpenAI
 from langchain.chat_models import ChatOpenAI
 
-from utils import API_KEY, COMPLETION_MODEL_NAME, PREDICTION_URL
+from Churn_Service.scripts.utils_and_constants import PREDICTION_URL
 from Churn_Service.scripts.service import predict_churn
+from LLM_Service.scripts.constant import API_KEY, COMPLETION_MODEL_NAME
 from LLM_Service.scripts.service import mail_generation, mail_revamp, chat_mode
 
 
@@ -26,7 +27,7 @@ def revamp(mail=None):
             st.write(mail)
             return mail
         else:
-            st.warning("Give the required infomation")
+            st.warning("Give the required information")
 
 
 def churn_prediction():
