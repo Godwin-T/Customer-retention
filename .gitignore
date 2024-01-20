@@ -1,9 +1,7 @@
 mlruns/
 
-*.csv
 *.db
 
-data/
 predictions/
 monitoring_service/
 tmp/
