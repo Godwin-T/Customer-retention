@@ -6,3 +6,4 @@ predictions/
 monitoring_service/
 tmp/
 *__pycache__/
+*.pytest_cache
